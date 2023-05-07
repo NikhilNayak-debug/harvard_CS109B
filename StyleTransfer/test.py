@@ -10,7 +10,7 @@ from torchvision import transforms
 from torchvision.utils import save_image
 from function import calc_mean_std, normal, coral
 import models.transformer as transformer
-import models.StyTR as StyTR
+import models.Transfer as Transfer
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from function import normal
@@ -108,13 +108,13 @@ if not os.path.exists(output_path):
     os.mkdir(output_path)
 
 
-vgg = StyTR.vgg
+vgg = Transfer.vgg
 vgg.load_state_dict(torch.load(args.vgg))
 vgg = nn.Sequential(*list(vgg.children())[:44])
 
-decoder = StyTR.decoder
+decoder = Transfer.decoder
 Trans = transformer.Transformer()
-embedding = StyTR.PatchEmbed()
+embedding = Transfer.PatchEmbed()
 
 decoder.eval()
 Trans.eval()
@@ -141,7 +141,7 @@ for k, v in state_dict.items():
     new_state_dict[namekey] = v
 embedding.load_state_dict(new_state_dict)
 
-network = StyTR.StyTrans(vgg,decoder,embedding,Trans,args)
+network = Transfer.StyleTransfer(vgg,decoder,embedding,Trans,args)
 network.eval()
 network.to(device)
 

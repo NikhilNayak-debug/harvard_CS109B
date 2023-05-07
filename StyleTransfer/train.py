@@ -10,7 +10,7 @@ from torchvision import transforms
 from tqdm import tqdm
 from pathlib import Path
 import models.transformer as transformer
-import models.StyTR  as StyTR 
+import models.Transfer as Transfer  
 from sampler import InfiniteSamplerWrapper
 from torchvision.utils import save_image
 
@@ -99,16 +99,16 @@ if not os.path.exists(args.log_dir):
     os.mkdir(args.log_dir)
 writer = SummaryWriter(log_dir=args.log_dir)
 
-vgg = StyTR.vgg
+vgg = Transfer.vgg
 vgg.load_state_dict(torch.load(args.vgg))
 vgg = nn.Sequential(*list(vgg.children())[:44])
 
-decoder = StyTR.decoder
-embedding = StyTR.PatchEmbed()
+decoder = Transfer.decoder
+embedding = Transfer.PatchEmbed()
 
 Trans = transformer.Transformer()
 with torch.no_grad():
-    network = StyTR.StyTrans(vgg,decoder,embedding, Trans,args)
+    network = Transfer.StyleTransfer(vgg,decoder,embedding, Trans,args)
 network.train()
 
 network.to(device)

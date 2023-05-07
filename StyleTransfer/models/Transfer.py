@@ -144,7 +144,7 @@ class MLP(nn.Module):
             x = F.relu(layer(x)) if i < self.num_layers - 1 else layer(x)
         return x
 
-class StyTrans(nn.Module):
+class StyleTransfer(nn.Module):
     """ This is the style transform transformer module """
     
     def __init__(self,encoder,decoder,PatchEmbed, transformer,args):
