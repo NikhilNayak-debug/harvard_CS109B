@@ -68,7 +68,7 @@ parser.add_argument('--content_dir', default='./datasets/train2014', type=str,
                     help='Directory path to a batch of content images')
 parser.add_argument('--style_dir', default='./datasets/Images', type=str,  #wikiart dataset crawled from https://www.wikiart.org/
                     help='Directory path to a batch of style images')
-parser.add_argument('--vgg', type=str, default='./experiments/vgg_normalised.pth')  #run the train.py, please download the pretrained vgg checkpoint
+parser.add_argument('--vgg', type=str, default='./experiments/vgg_normalised.pth')  #run the train.py, download the pretrained vgg checkpoint
 
 # training options
 parser.add_argument('--save_dir', default='./experiments',
@@ -135,10 +135,7 @@ style_iter = iter(data.DataLoader(
 optimizer = torch.optim.Adam([
                               {'params': network.transformer.parameters()},
                               {'params': network.decode.parameters()},
-                              {'params': network.embedding.parameters()}, 
-#                               {'params': network.module.transformer.parameters()},
-#                               {'params': network.module.decode.parameters()},
-#                               {'params': network.module.embedding.parameters()},        
+                              {'params': network.embedding.parameters()},      
                               ], lr=args.lr)
 
 

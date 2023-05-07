@@ -16,6 +16,7 @@ from matplotlib import cm
 from function import normal
 import numpy as np
 import time
+
 def test_transform(size, crop):
     transform_list = []
    
@@ -26,6 +27,7 @@ def test_transform(size, crop):
     transform_list.append(transforms.ToTensor())
     transform = transforms.Compose(transform_list)
     return transform
+
 def style_transform(h,w):
     k = (h,w)
     size = int(np.max(k))
@@ -37,12 +39,10 @@ def style_transform(h,w):
     return transform
 
 def content_transform():
-    
     transform_list = []   
     transform_list.append(transforms.ToTensor())
     transform = transforms.Compose(transform_list)
     return transform
-
   
 
 parser = argparse.ArgumentParser()
@@ -123,7 +123,6 @@ from collections import OrderedDict
 new_state_dict = OrderedDict()
 state_dict = torch.load(args.decoder_path)
 for k, v in state_dict.items():
-    #namekey = k[7:] # remove `module.`
     namekey = k
     new_state_dict[namekey] = v
 decoder.load_state_dict(new_state_dict)
@@ -131,7 +130,6 @@ decoder.load_state_dict(new_state_dict)
 new_state_dict = OrderedDict()
 state_dict = torch.load(args.Trans_path)
 for k, v in state_dict.items():
-    #namekey = k[7:] # remove `module.`
     namekey = k
     new_state_dict[namekey] = v
 Trans.load_state_dict(new_state_dict)
@@ -139,7 +137,6 @@ Trans.load_state_dict(new_state_dict)
 new_state_dict = OrderedDict()
 state_dict = torch.load(args.embedding_path)
 for k, v in state_dict.items():
-    #namekey = k[7:] # remove `module.`
     namekey = k
     new_state_dict[namekey] = v
 embedding.load_state_dict(new_state_dict)
@@ -174,7 +171,6 @@ for content_path in content_paths:
         #output = output.cpu()
         output = output[0]
         print(output[0])
-        #print(output.size())
                 
         output_name = '{:s}/{:s}_stylized_{:s}{:s}'.format(
             output_path, splitext(basename(content_path))[0],

@@ -235,6 +235,5 @@ class StyTrans(nn.Module):
         loss_lambda2 = self.calc_content_loss(Icc_feats[0], content_feats[0])+self.calc_content_loss(Iss_feats[0], style_feats[0])
         for i in range(1, 5):
             loss_lambda2 += self.calc_content_loss(Icc_feats[i], content_feats[i])+self.calc_content_loss(Iss_feats[i], style_feats[i])
-        # Please select and comment out one of the following two sentences
         return Ics,  loss_c, loss_s, loss_lambda1, loss_lambda2   #train
         # return Ics    #test 
