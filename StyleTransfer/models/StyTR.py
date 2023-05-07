@@ -9,13 +9,16 @@ from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
 from function import normal,normal_style
 from function import calc_mean_std
 import scipy.stats as stats
-from models.ViT_helper import DropPath, to_2tuple, trunc_normal_
+import collections.abc as container_abcs
+from itertools import repeat
+#from models.ViT_helper import DropPath, to_2tuple, trunc_normal_
 
 class PatchEmbed(nn.Module):
     """ Image to Patch Embedding
     """
     def __init__(self, img_size=256, patch_size=8, in_chans=3, embed_dim=512):
         super().__init__()
+        to_2tuple = self._ntuple(2)
         img_size = to_2tuple(img_size)
         patch_size = to_2tuple(patch_size)
         num_patches = (img_size[1] // patch_size[1]) * (img_size[0] // patch_size[0])
@@ -31,6 +34,14 @@ class PatchEmbed(nn.Module):
         x = self.proj(x)
 
         return x
+    
+    # From PyTorch internals
+    def _ntuple(self, n):
+        def parse(x):
+            if isinstance(x, container_abcs.Iterable):
+                return x
+            return tuple(repeat(x, n))
+        return parse
 
 
 decoder = nn.Sequential(
