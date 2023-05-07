@@ -11,7 +11,6 @@ from function import calc_mean_std
 import scipy.stats as stats
 import collections.abc as container_abcs
 from itertools import repeat
-#from models.ViT_helper import DropPath, to_2tuple, trunc_normal_
 
 class PatchEmbed(nn.Module):
     """ Image to Patch Embedding
@@ -32,7 +31,6 @@ class PatchEmbed(nn.Module):
     def forward(self, x):
         B, C, H, W = x.shape
         x = self.proj(x)
-
         return x
     
     # From PyTorch internals
@@ -145,6 +143,7 @@ class MLP(nn.Module):
         for i, layer in enumerate(self.layers):
             x = F.relu(layer(x)) if i < self.num_layers - 1 else layer(x)
         return x
+
 class StyTrans(nn.Module):
     """ This is the style transform transformer module """
     
