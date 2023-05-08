@@ -14,6 +14,7 @@ import models.Transfer as Transfer
 from sampler import InfiniteSamplerWrapper
 from torchvision.utils import save_image
 
+# file for training and saving the model using 4 losses - content loss, style loss using vgg and identity content, style loss
 
 def train_transform():
     transform_list = [

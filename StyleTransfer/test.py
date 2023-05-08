@@ -17,6 +17,8 @@ from function import normal
 import numpy as np
 import time
 
+# file for using the trained model for inference
+
 def test_transform(size, crop):
     transform_list = []
    

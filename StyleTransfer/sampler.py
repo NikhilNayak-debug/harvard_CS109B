@@ -1,6 +1,10 @@
 import numpy as np
 from torch.utils import data
 
+# Python file for defining an infinite sampler that generates an infinite
+# stream of indices into a dataset, and a wrapper that can
+# be used to create a PyTorch sampler object from the infinite sampler.
+# Used during training.
 
 def InfiniteSampler(n):
     # i = 0

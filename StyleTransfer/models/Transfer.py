@@ -13,7 +13,7 @@ import collections.abc as container_abcs
 from itertools import repeat
 
 class PatchEmbed(nn.Module):
-    """ Image to Patch Embedding
+    """ Method for converting image to Patch Embedding (patches) for the seq2seq task
     """
     def __init__(self, img_size=256, patch_size=8, in_chans=3, embed_dim=512):
         super().__init__()
@@ -42,6 +42,7 @@ class PatchEmbed(nn.Module):
         return parse
 
 
+# Final decoder after transformer decoder
 decoder = nn.Sequential(
     nn.ReflectionPad2d((1, 1, 1, 1)),
     nn.Conv2d(512, 256, (3, 3)),
@@ -74,6 +75,8 @@ decoder = nn.Sequential(
     nn.Conv2d(64, 3, (3, 3)),
 )
 
+
+# vgg network for computing loss
 vgg = nn.Sequential(
     nn.Conv2d(3, 3, (1, 1)),
     nn.ReflectionPad2d((1, 1, 1, 1)),
@@ -130,20 +133,8 @@ vgg = nn.Sequential(
     nn.ReLU()  # relu5-4
 )
 
-class MLP(nn.Module):
-    """ Very simple multi-layer perceptron (also called FFN)"""
 
-    def __init__(self, input_dim, hidden_dim, output_dim, num_layers):
-        super().__init__()
-        self.num_layers = num_layers
-        h = [hidden_dim] * (num_layers - 1)
-        self.layers = nn.ModuleList(nn.Linear(n, k) for n, k in zip([input_dim] + h, h + [output_dim]))
-
-    def forward(self, x):
-        for i, layer in enumerate(self.layers):
-            x = F.relu(layer(x)) if i < self.num_layers - 1 else layer(x)
-        return x
-
+# class for bringing the entire model together including architecture and loss
 class StyleTransfer(nn.Module):
     """ This is the style transform transformer module """
     
@@ -186,6 +177,7 @@ class StyleTransfer(nn.Module):
         target_mean, target_std = calc_mean_std(target)
         return self.mse_loss(input_mean, target_mean) + \
                self.mse_loss(input_std, target_std)
+    
     def forward(self, samples_c: NestedTensor,samples_s: NestedTensor):
         """ The forward expects a NestedTensor, which consists of:
                - samples.tensor: batched images, of shape [batch_size x 3 x H x W]

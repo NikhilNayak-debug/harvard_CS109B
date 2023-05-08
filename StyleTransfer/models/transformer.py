@@ -9,6 +9,8 @@ import numpy as np
 import os
 device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
 os.environ["CUDA_VISIBLE_DEVICES"] = "2, 3"
+
+# class for bringing the entire model architecture together
 class Transformer(nn.Module):
 
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=3,
